@@ -3,7 +3,7 @@ import shutil
 import os
 import csv
 year ="2013"
-for x in range(1):
+for x in range(8):
 	
 	for root, dirs, files in os.walk(year):
 	    for filename in files:
