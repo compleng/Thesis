@@ -1,9 +1,10 @@
 import subprocess
 import shutil
 import os
+import csv
 year ="2013"
 for x in range(8):
-
+	
 	for root, dirs, files in os.walk(year):
 	    for filename in files:
 		with open('/var/log/snort/alert', 'w') as fp: 
@@ -19,7 +20,17 @@ for x in range(8):
 		for line in output.splitlines():
 	    	  if "[**]" in line:
 			output_file.writelines(line + "\n")
-		output_file.write("-----------------------------------------------------------------\n\n\n\n")  
+			with open('Snort_Results.csv', 'a') as file:
+				writer = csv.writer(file)
+				writer.writerow([filename,"1"])
+		  else:
+			with open('Snort_Results.csv', 'a') as file:
+				writer = csv.writer(file)
+				writer.writerow([filename,"0"])
+		output_file.write("-----------------------------------------------------------------\n\n\n\n")
+		
+    			
+    			  
 
 		os.remove("/var/log/snort/alert")
 		os.remove("/var/log/snort/old_alert")
