@@ -3,13 +3,12 @@ import shutil
 import os
 import csv
 year ="2013"
-for x in range(8):
+for x in range(1):
 	
 	for root, dirs, files in os.walk(year):
 	    for filename in files:
 		with open('/var/log/snort/alert', 'w') as fp: 
 	    		pass
-		shutil.copy("/var/log/snort/alert","/var/log/snort/old_alert")
 		#sudo snort -v -c /etc/snort/snort.conf -r filename -A full
 		subprocess.call(["snort", "-v", "-c", "/etc/snort/snort.conf", "-r", os.path.abspath(year + "/"+filename),"-A", "full"])
 		alert_file = open("/var/log/snort/alert",'r')	
@@ -23,16 +22,13 @@ for x in range(8):
 			with open('Snort_Results.csv', 'a') as file:
 				writer = csv.writer(file)
 				writer.writerow([filename,"1"])
-		  else:
-			with open('Snort_Results.csv', 'a') as file:
-				writer = csv.writer(file)
-				writer.writerow([filename,"0"])
+		if (os.stat("/var/log/snort/alert").st_size == 0):
+		  with open('Snort_Results.csv', 'a') as file:
+			writer = csv.writer(file)
+			writer.writerow([filename,"0"])
 		output_file.write("-----------------------------------------------------------------\n\n\n\n")
 		
-    			
-    			  
-
 		os.remove("/var/log/snort/alert")
-		os.remove("/var/log/snort/old_alert")
+		
 
 	year = str(int(year)+1)
